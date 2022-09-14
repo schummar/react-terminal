@@ -58,6 +58,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@types/react": "^18.0.20",
     "@types/react-reconciler": "^0.28.0",
