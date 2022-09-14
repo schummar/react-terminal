@@ -25,6 +25,9 @@ specifiers:
   typescript: 4.8.3
   wrap-ansi: ^8.0.1
 
+dependencies:
+  chalk: 5.0.1
+
 devDependencies:
   '@schummar/runp': 1.5.3_@types+react@18.0.20
   '@types/node': 18.7.18
@@ -35,7 +38,6 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.36.2_2l2r3i3lm6jysqd4ac3ql4n2mm
   '@typescript-eslint/parser': 5.36.2_itqs5654cmlnjraw6gjzqacppi
   ansi-escapes: 5.0.0
-  chalk: 5.0.1
   esbuild: 0.15.7
   eslint: 8.23.0
   eslint-config-prettier: 8.5.0_eslint@8.23.0
@@ -763,7 +765,6 @@ packages:
   /chalk/5.0.1:
     resolution: {integrity: sha512-Fo07WOYGqMfCWHOzSXOt2CxDbC6skS/jO9ynEcmpANMoPrD+W1r1K6Vx7iNm+AQmETU1Xr2t+n8nzkV9t6xh3w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-    dev: true
 
   /ci-info/2.0.0:
     resolution: {integrity: sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==}

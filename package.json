@@ -30,6 +30,9 @@
     "build:compile:cjs": "NODE_ENV=production esbuild --bundle --platform=node --sourcemap --external:react --external:react-reconciler --format=cjs src/index.ts --outfile=dist/index.cjs",
     "prepublishOnly": "runp lint build"
   },
+  "dependencies": {
+    "chalk": "^5.0.1"
+  },
   "devDependencies": {
     "@schummar/runp": "^1.5.3",
     "@types/node": "^18.7.18",
@@ -40,7 +43,6 @@
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
     "ansi-escapes": "^5.0.0",
-    "chalk": "^5.0.1",
     "esbuild": "0.15.7",
     "eslint": "8.23.0",
     "eslint-config-prettier": "^8.5.0",
