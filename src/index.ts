@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 import Reconciler from 'react-reconciler';
-import { createHostConfig, ParagraphElement } from './hostConfig';
-import { TerminalWriter } from './terminalWriter';
+import { createHostConfig, ParagraphElement } from './internal/hostConfig';
+import { TerminalWriter } from './internal/terminalWriter';
+export { Paragraph, Text } from './elements';
+export type { ParagraphProps, TextProps } from './elements';
 
 export const render = (component: ReactNode) => {
   const root: ParagraphElement = { type: 'paragraphElement', children: [], props: {} };

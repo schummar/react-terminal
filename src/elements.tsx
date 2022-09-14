@@ -21,6 +21,7 @@ export type TextProps = {
 } & {
   [K in Modifiers]?: boolean;
 };
+
 export type ParagraphProps = TextProps & {
   margin?: number | [number, number] | [number, number, number] | [number, number, number, number];
   maxLines?: number;

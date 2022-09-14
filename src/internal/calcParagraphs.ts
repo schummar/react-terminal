@@ -1,7 +1,7 @@
 import chalk, { ForegroundColor, Modifiers } from 'chalk';
 import stringWidth from 'string-width';
 import wrapAnsi from 'wrap-ansi';
-import { TextProps } from './elements';
+import { TextProps } from '../elements';
 import { Node } from './hostConfig';
 import { layoutChunk } from './layoutChunk';
 

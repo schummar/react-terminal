@@ -1,5 +1,5 @@
 import { HostConfig } from 'react-reconciler';
-import { ParagraphProps, TextProps } from './elements';
+import { ParagraphProps, TextProps } from '../elements';
 
 export type Node = TextElement | ParagraphElement | Text;
 export type TextElement = { type: 'textElement'; children: Node[]; props: TextProps };
