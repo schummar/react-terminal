@@ -1,9 +1,7 @@
 import chalk, { ForegroundColor, Modifiers } from 'chalk';
 import stringWidth from 'string-width';
-import wrapAnsi from 'wrap-ansi';
 import { TextProps } from '../elements';
 import { Node } from './hostConfig';
-import { layoutChunk } from './layoutChunk';
 
 type Chunk = { content: string | Chunk[]; width: number; grow: number; shrink: number; ellipsis?: boolean };
 type P = Chunk & { open: boolean; marginRight: number; marginLeft: number };
@@ -31,7 +29,7 @@ const calcFormat = (props: TextProps, format = chalk) => {
   return format;
 };
 
-const calcParagraph = (node: Node, format = chalk): P[] => {
+export const calcParagraph = (node: Node, format = chalk): P[] => {
   // For text node: Just return a new open paragraph
   if (node.type === 'text') {
     return node.text.split('\n').map((line, i, arr) => {
@@ -103,27 +101,4 @@ const calcParagraph = (node: Node, format = chalk): P[] => {
   }
 
   return paragraphs;
-};
-
-export const calcParagraphs = (node: Node, additionalLines: string): string[] => {
-  const paragraphs = calcParagraph(node);
-  paragraphs.push({
-    marginLeft: 0,
-    marginRight: 0,
-    open: false,
-    content: additionalLines,
-    width: stringWidth(additionalLines),
-    grow: 0,
-    shrink: 0,
-  });
-
-  return paragraphs.flatMap((p) => {
-    const cols = process.stdout.columns - p.marginLeft - p.marginRight;
-    // const forceWidth = (cols > p.width && p.grow) || (cols < p.width && p.shrink) ? cols : undefined;
-
-    const text = layoutChunk(p, cols);
-    return wrapAnsi(text, cols, { hard: true, trim: false })
-      .split('\n')
-      .map((line) => ''.padEnd(p.marginLeft, ' ') + line);
-  });
 };

@@ -1,5 +1,5 @@
 import ansiEscapes from 'ansi-escapes';
-import { calcParagraphs } from './calcParagraphs';
+import { calcLines } from './calcLines';
 import { ParagraphElement } from './hostConfig';
 import { rewrapLines } from './rewrapLines';
 
@@ -77,7 +77,7 @@ export class TerminalWriter {
 
   render() {
     const cols = process.stdout.columns;
-    const lines = calcParagraphs(this.root, this.additionalLines);
+    const lines = calcLines(this.root, this.additionalLines);
     let renderedLines: (string | null)[] = this.renderedLines?.lines ?? [];
 
     if (this.renderedLines && this.renderedLines.cols !== cols) {
