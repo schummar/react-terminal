@@ -31,7 +31,7 @@ export const createHostConfig = (
 
   getRootHostContext: () => null,
   prepareForCommit: () => null,
-  resetAfterCommit: () => null,
+  resetAfterCommit: update,
   getChildHostContext: () => null,
 
   // Handle paragraph nodes
@@ -51,7 +51,6 @@ export const createHostConfig = (
   prepareUpdate: () => true,
   commitUpdate: (node, _payload, _type, _prev, props) => {
     node.props = { ...props, children: undefined };
-    update();
   },
 
   // Handle text nodes
@@ -60,7 +59,6 @@ export const createHostConfig = (
   },
   commitTextUpdate: (textNode, _old, text) => {
     textNode.text = text;
-    update();
   },
 
   // Append

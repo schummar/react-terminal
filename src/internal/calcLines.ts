@@ -1,34 +1,26 @@
-import stringWidth from 'string-width';
-import wrapAnsi from 'wrap-ansi';
-import { calcParagraph } from './calcParagraphs';
 import { Node } from './hostConfig';
-import { layoutChunk } from './layoutChunk';
+import { layoutNode } from './layoutNode';
+import { prepareNode } from './prepareNode';
 
-export const calcLines = (node: Node, additionalLines: string): string[] => {
-  const paragraphs = calcParagraph(node);
-  paragraphs.push({
-    marginLeft: 0,
-    marginRight: 0,
-    open: false,
-    content: additionalLines,
-    width: stringWidth(additionalLines),
-    grow: 0,
-    shrink: 0,
-  });
+export const calcLines = (node: Node, additionalLines: string, width = process.stdout.columns): string[] => {
+  const prepared = prepareNode(node);
+  return prepared.flatMap((prepared) => layoutNode(prepared, width));
 
-  const lines = paragraphs.flatMap((p) => {
-    const cols = process.stdout.columns - p.marginLeft - p.marginRight;
-    // const forceWidth = (cols > p.width && p.grow) || (cols < p.width && p.shrink) ? cols : undefined;
+  // if (additionalLines) {
+  //   paragraphs.push({
+  //     marginLeft: 0,
+  //     marginRight: 0,
+  //     open: false,
+  //     content: additionalLines,
+  //     width: stringWidth(additionalLines),
+  //     grow: 0,
+  //     shrink: 0,
+  //   });
+  // }
 
-    const text = layoutChunk(p, cols);
-    return wrapAnsi(text, cols, { hard: true, trim: false })
-      .split('\n')
-      .map((line) => ''.padEnd(p.marginLeft, ' ') + line);
-  });
-
-  if (node.type === 'paragraphElement') {
-    return lines.slice(-(node.props.maxLines ?? 0));
-  }
-
-  return lines;
+  // return paragraphs.flatMap((p) => {
+  //   return wrapAnsi(p, cols, { hard: true, trim: false })
+  //     .split('\n')
+  //     .map((line) => ''.padEnd(p.marginLeft ?? 0, ' ') + line);
+  // });
 };

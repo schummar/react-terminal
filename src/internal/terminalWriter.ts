@@ -64,7 +64,10 @@ export class TerminalWriter {
     };
 
     [`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `SIGTERM`].forEach((eventType) => {
-      process.on(eventType, cleanup);
+      process.on(eventType, () => {
+        cleanup();
+        process.exit();
+      });
     });
 
     process.on('uncaughtException', (e) => {
