@@ -76,8 +76,6 @@ export class TerminalWriter {
     });
   }
 
-  i = 0;
-
   render() {
     const cols = process.stdout.columns;
     const lines = calcLines(this.root, this.additionalLines);
