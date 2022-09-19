@@ -74,6 +74,10 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
   format = calcFormat(node.props, format);
   const children = node.children.flatMap((child) => prepareNode(child, format));
 
+  if (children.length === 0) {
+    return [];
+  }
+
   let last: PNode | undefined;
   let currentGroup: PNode[] = [];
   const groups = [currentGroup];
