@@ -3,5 +3,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  test: {},
+  test: {
+    env: {
+      FORCE_COLOR: '1',
+    },
+  },
 });
