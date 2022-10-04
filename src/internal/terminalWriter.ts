@@ -30,6 +30,7 @@ export class TerminalWriter {
     for (const handle of this.handles) {
       handle();
     }
+    delete this.originalWrite;
   }
 
   private hookIntoStdout() {
@@ -49,7 +50,6 @@ export class TerminalWriter {
 
     return () => {
       this.target.write = originalWrite;
-      delete this.originalWrite;
     };
   }
 
