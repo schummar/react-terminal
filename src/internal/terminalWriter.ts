@@ -89,8 +89,6 @@ export class TerminalWriter {
       renderedLines = rewrapLines(this.renderedLines.lines, cols).map(() => null);
     }
 
-    if (full) console.log(full && lines.length > rows - 1);
-
     if (full && lines.length > rows - 1) {
       write(ansiEscapes.clearTerminal);
       maxLines = 0;
