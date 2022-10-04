@@ -13,7 +13,7 @@ export const layoutNode = (node: PNode, maxWidth: number): string[] => {
   } else if (node.inline) {
     const children = node.content.map((child) => ({ ...child, delta: 0, max: 0 }));
 
-    if (node.width !== maxWidth) {
+    if (maxWidth !== Infinity && maxWidth !== 0 && node.width !== maxWidth) {
       const prop = maxWidth > node.width ? 'grow' : 'shrink';
       const layoutNodes = children.filter((child) => child[prop]);
 
@@ -59,13 +59,13 @@ export const layoutNode = (node: PNode, maxWidth: number): string[] => {
   paragraphs = paragraphs.flatMap((p) => {
     const width = stringWidth(p);
 
-    if (maxWidth < width && node.shrink) {
+    if (maxWidth !== Infinity && maxWidth !== 0 && maxWidth < width && node.shrink) {
       if (node.ellipsis) {
         p = sliceAnsi(p, 0, Math.max(maxWidth - 3, 0)) + ''.padEnd(Math.min(maxWidth, 3), '.');
       } else {
         p = sliceAnsi(p, 0, maxWidth);
       }
-    } else if (maxWidth > width && node.grow) {
+    } else if (maxWidth !== Infinity && maxWidth !== 0 && maxWidth > width && node.grow) {
       p = p + ''.padEnd(maxWidth - width, ' ');
     }
 

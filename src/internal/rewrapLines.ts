@@ -1,7 +1,7 @@
 import wrapAnsi from 'wrap-ansi';
 
-export const rewrapLines = (lines: string[]) => {
+export const rewrapLines = (lines: string[], width: number) => {
   return lines.flatMap((line) => {
-    return wrapAnsi(line, process.stdout.columns, { hard: true, trim: false }).split('\n');
+    return wrapAnsi(line, width, { hard: true, trim: false }).split('\n');
   });
 };

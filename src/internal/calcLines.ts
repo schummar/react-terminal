@@ -2,7 +2,7 @@ import { Node } from './hostConfig';
 import { layoutNode } from './layoutNode';
 import { PNode, prepareNode } from './prepareNode';
 
-export const calcLines = (node: Node, additionalLines: string, width = process.stdout.columns): string[] => {
+export const calcLines = (node: Node, additionalLines: string, width: number): string[] => {
   const prepared = prepareNode(node);
 
   if (additionalLines.length > 0) {

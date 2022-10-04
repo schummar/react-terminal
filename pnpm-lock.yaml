@@ -29,6 +29,7 @@ specifiers:
   vite: ^3.1.1
   vitest: ^0.23.2
   wrap-ansi: ^8.0.1
+  xterm-headless: ^5.0.0
 
 dependencies:
   chalk: 5.0.1
@@ -61,6 +62,7 @@ devDependencies:
   vite: 3.1.1
   vitest: 0.23.2
   wrap-ansi: 8.0.1
+  xterm-headless: 5.0.0
 
 packages:
 
@@ -4073,6 +4075,10 @@ packages:
   /xtend/4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
+    dev: true
+
+  /xterm-headless/5.0.0:
+    resolution: {integrity: sha512-d+3C883Tz5zNCcapJSUpZVO8lplKhjJZtvuL4oIMTE74BX/3UsK7zUQgp5c6KS5Vv4FjFSb3XQA+n2Cx9Znq+w==}
     dev: true
 
   /y18n/5.0.8:
