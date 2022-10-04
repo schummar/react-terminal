@@ -6,6 +6,8 @@ import { Paragraph } from '../src/elements';
 import { TerminalWriterTarget } from '../src/internal/terminalWriter';
 
 class TestTerminal implements TerminalWriterTarget {
+  constructor(private options: { cols: number; rows: number }) {}
+
   term = new Terminal({
     cols: this.options.cols,
     rows: this.options.rows,
@@ -15,8 +17,6 @@ class TestTerminal implements TerminalWriterTarget {
   write = this.term.write.bind(this.term) as TerminalWriterTarget['write'];
   columns = this.options.cols;
   rows = this.options.rows;
-
-  constructor(private options: { cols: number; rows: number }) {}
 
   getBuffer = (all = false) => {
     const buffer = this.term.buffer.active;
