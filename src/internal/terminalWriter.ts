@@ -4,7 +4,7 @@ import { ParagraphElement } from './hostConfig';
 import { rewrapLines } from './rewrapLines';
 
 export interface TerminalWriterTarget {
-  write: typeof process['stdout']['write'];
+  write: (typeof process)['stdout']['write'];
   columns: number;
   rows: number;
 }
