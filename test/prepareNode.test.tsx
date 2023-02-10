@@ -40,6 +40,26 @@ describe('calcParagraph', () => {
     ]);
   });
 
+  test('empty text element', () => {
+    const node = testRender(<Text grow shrink={1} ellipsis />);
+    const p = prepareNode(node);
+
+    expect(p).toEqual([
+      withDefaults({
+        content: [
+          {
+            content: [],
+            inline: { l: true, r: true },
+            width: 0,
+            ellipsis: true,
+            grow: 1,
+            shrink: 1,
+          },
+        ],
+      }),
+    ]);
+  });
+
   test('paragraph', () => {
     const node = testRender(
       <Paragraph margin={1} maxLines={2}>
@@ -53,6 +73,23 @@ describe('calcParagraph', () => {
         content: [
           {
             content: [{ content: 'foo', inline: { l: true, r: true }, width: 3 }],
+            margin: [1, 1, 1, 1],
+            maxLines: 2,
+          },
+        ],
+      }),
+    ]);
+  });
+
+  test('empty paragraph', () => {
+    const node = testRender(<Paragraph margin={1} maxLines={2} />);
+    const p = prepareNode(node);
+
+    expect(p).toEqual([
+      withDefaults({
+        content: [
+          {
+            content: [],
             margin: [1, 1, 1, 1],
             maxLines: 2,
           },

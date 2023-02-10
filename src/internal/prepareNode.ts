@@ -12,6 +12,7 @@ export type PNode = {
   };
   width: number;
   grow: number;
+  fill: string;
   shrink: number;
   ellipsis: boolean;
   margin: [number, number, number, number];
@@ -64,6 +65,7 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
       },
       width: stringWidth(line),
       grow: 0,
+      fill: ' ',
       shrink: 0,
       ellipsis: false,
       margin: [0, 0, 0, 0],
@@ -74,9 +76,9 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
   format = calcFormat(node.props, format);
   const children = node.children.flatMap((child) => prepareNode(child, format));
 
-  if (children.length === 0) {
-    return [];
-  }
+  // if (children.length === 0) {
+  //   return [];
+  // }
 
   let last: PNode | undefined;
   let currentGroup: PNode[] = [];
@@ -92,23 +94,26 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
     last = child;
   }
 
-  const blocks = groups.map<PNode>((group) =>
-    node.type === 'textElement' || group.length > 1
-      ? {
-          content: group,
-          inline: {
-            l: group[0]?.inline?.l ?? false,
-            r: group.at(-1)?.inline?.r ?? false,
-          },
-          width: sum(group.map((child) => child.width)),
-          grow: normValue(node.props.grow),
-          shrink: normValue(node.props.shrink),
-          ellipsis: node.props.ellipsis ?? false,
-          margin: [0, 0, 0, 0],
-          maxLines: Infinity,
-        }
-      : (group[0] as PNode),
-  );
+  const blocks = groups
+    .map<PNode | undefined>((group) =>
+      node.type === 'textElement' || group.length > 1
+        ? {
+            content: group,
+            inline: {
+              l: group[0]?.inline?.l ?? true,
+              r: group.at(-1)?.inline?.r ?? true,
+            },
+            width: sum(group.map((child) => child.width)),
+            grow: normValue(node.props.grow ?? (node.props.fill ? true : undefined)),
+            fill: node.props.fill ?? ' ',
+            shrink: normValue(node.props.shrink),
+            ellipsis: node.props.ellipsis ?? false,
+            margin: [0, 0, 0, 0],
+            maxLines: Infinity,
+          }
+        : group[0],
+    )
+    .filter((block): block is PNode => block !== undefined);
 
   if (node.type === 'textElement') {
     return blocks;
@@ -119,6 +124,7 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
       content: blocks,
       width: 0,
       grow: 0,
+      fill: ' ',
       shrink: 0,
       ellipsis: false,
       margin: calcMargin(node.props.margin),

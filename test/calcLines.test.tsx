@@ -52,4 +52,17 @@ describe('calcParagraphs', () => {
     baz`,
     );
   });
+
+  test('fill', () => {
+    const node = testRender(
+      <>
+        <Paragraph>
+          <Text grow fill="#" /> foo <Text grow fill="#" />
+        </Paragraph>
+      </>,
+    );
+    const lines = calcLines(node, '', 20);
+
+    expect(lines).toEqual(['######## foo #######']);
+  });
 });

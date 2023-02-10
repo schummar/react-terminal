@@ -1,4 +1,4 @@
-import type { ForegroundColor, Modifiers } from 'chalk';
+import type { ForegroundColorName, ModifierName } from 'chalk';
 import { ReactNode } from 'react';
 
 declare global {
@@ -13,13 +13,14 @@ declare global {
 
 export type TextProps = {
   children?: ReactNode;
-  color?: ForegroundColor;
-  backgroundColor?: ForegroundColor;
+  color?: ForegroundColorName;
+  backgroundColor?: ForegroundColorName;
   grow?: boolean | number;
+  fill?: string;
   shrink?: boolean | number;
   ellipsis?: boolean;
 } & {
-  [K in Modifiers]?: boolean;
+  [K in ModifierName]?: boolean;
 };
 
 export type ParagraphProps = TextProps & {

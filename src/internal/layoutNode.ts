@@ -17,7 +17,7 @@ export const layoutNode = (node: PNode, maxWidth: number): string[] => {
       const prop = maxWidth > node.width ? 'grow' : 'shrink';
       const layoutNodes = children.filter((child) => child[prop]);
 
-      if (layoutNode.length > 0) {
+      if (layoutNodes.length > 0) {
         let delta = Math.abs(maxWidth - node.width);
         const divisor = sum(layoutNodes.map((child) => child[prop])) / delta;
 
@@ -66,7 +66,7 @@ export const layoutNode = (node: PNode, maxWidth: number): string[] => {
         p = sliceAnsi(p, 0, maxWidth);
       }
     } else if (maxWidth !== Infinity && maxWidth !== 0 && maxWidth > width && node.grow) {
-      p = p + ''.padEnd(maxWidth - width, ' ');
+      p = p + ''.padEnd(maxWidth - width, node.fill);
     }
 
     return wrapAnsi(p, maxWidth, { hard: true, trim: false })

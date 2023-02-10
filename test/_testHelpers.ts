@@ -5,6 +5,7 @@ type PPNode = Partial<Omit<PNode, 'content'> & { content: string | PPNode[] }>;
 export const withDefaults = (node: PPNode): PNode => ({
   width: 0,
   grow: 0,
+  fill: ' ',
   shrink: 0,
   ellipsis: false,
   margin: [0, 0, 0, 0],

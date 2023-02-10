@@ -11,6 +11,7 @@ export const calcLines = (node: Node, additionalLines: string, width: number): s
         content: line,
         width: 0,
         grow: 0,
+        fill: ' ',
         shrink: 0,
         ellipsis: false,
         margin: [0, 0, 0, 0],
