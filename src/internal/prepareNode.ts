@@ -1,4 +1,4 @@
-import chalk, { ForegroundColor, Modifiers } from 'chalk';
+import chalk, { ForegroundColorName, ModifierName } from 'chalk';
 import stringWidth from 'string-width';
 import { ParagraphProps, TextProps } from '../elements';
 import { sum } from './helpers';
@@ -6,6 +6,7 @@ import { Node } from './hostConfig';
 
 export type PNode = {
   content: string | PNode[];
+  format?: (s: string) => string;
   inline?: {
     l: boolean;
     r: boolean;
@@ -28,13 +29,13 @@ const calcFormat = (props: TextProps, format = chalk) => {
   if (props.backgroundColor) {
     const bgColor = `bg${props.backgroundColor.at(0)?.toUpperCase()}${props.backgroundColor.slice(
       1,
-    )}` as `bg${Capitalize<ForegroundColor>}`;
+    )}` as `bg${Capitalize<ForegroundColorName>}`;
     format = format[bgColor];
   }
 
   for (const [key, value] of Object.entries(props)) {
     if (key in format && value) {
-      format = format[key as Modifiers];
+      format = format[key as ModifierName];
     }
   }
 
@@ -59,7 +60,8 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
   // For text node: Just return a new open paragraph
   if (node.type === 'text') {
     return node.text.split('\n').map((line, index, arr) => ({
-      content: format(line),
+      content: line,
+      format,
       inline: {
         l: index === 0,
         r: index === arr.length - 1,
@@ -90,6 +92,7 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
       node.type === 'textElement' || group.length > 1
         ? {
             content: group,
+            format,
             inline: {
               l: group[0]?.inline?.l ?? true,
               r: group.at(-1)?.inline?.r ?? true,
@@ -112,6 +115,7 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
   return [
     {
       content: blocks,
+      format,
       margin: calcMargin(node.props.margin),
       maxLines: node.props.maxLines,
       prefix: node.props.prefix,

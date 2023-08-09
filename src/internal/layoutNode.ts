@@ -7,6 +7,7 @@ import { PNode } from './prepareNode';
 function withDefaults(node: PNode): PNode & Required<Omit<PNode, 'inline'>> {
   return {
     content: node.content,
+    format: node.format ?? ((s) => s),
     inline: node.inline,
     width: node.width ?? 0,
     grow: node.grow ?? 0,
@@ -78,17 +79,19 @@ export const layoutNode = (_node: PNode, maxWidth: number): string[] => {
 
     if (maxWidth !== Infinity && maxWidth !== 0 && maxWidth < width && node.shrink) {
       if (node.ellipsis) {
-        p = sliceAnsi(p, 0, Math.max(maxWidth - 3, 0)) + ''.padEnd(Math.min(maxWidth, 3), '.');
+        p = sliceAnsi(p, 0, Math.max(maxWidth - 3, 0)) + '.'.repeat(Math.min(maxWidth, 3));
       } else {
         p = sliceAnsi(p, 0, maxWidth);
       }
     } else if (maxWidth !== Infinity && maxWidth !== 0 && maxWidth > width && node.grow) {
-      p = p + ''.padEnd(maxWidth - width, node.fill);
+      const toFill = maxWidth - width;
+      const filler = node.fill.repeat(Math.ceil(toFill / stringWidth(node.fill)));
+      p = p + sliceAnsi(filler, 0, toFill);
     }
 
     return wrapAnsi(p, maxWidth, { hard: true, trim: false })
       .split('\n')
-      .map((line) => node.prefix + (line.length ? ''.padEnd(node.margin[3], ' ') + line : line));
+      .map((line) => node.format(node.prefix + (line.length ? ''.repeat(node.margin[3]) + line : line)));
   });
 
   paragraphs = paragraphs.slice(-node.maxLines);

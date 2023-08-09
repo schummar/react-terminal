@@ -8,7 +8,7 @@ describe('calcParagraph', () => {
     const node = testRender('foo');
     const p = prepareNode(node);
 
-    expect(p).toEqual([
+    expect(p).toMatchObject([
       {
         content: [{ content: 'foo', inline: { l: true, r: true }, width: 3 }],
       },
@@ -23,7 +23,7 @@ describe('calcParagraph', () => {
     );
     const p = prepareNode(node);
 
-    expect(p).toEqual([
+    expect(p).toMatchObject([
       {
         content: [
           {
@@ -43,7 +43,7 @@ describe('calcParagraph', () => {
     const node = testRender(<Text grow shrink={1} ellipsis />);
     const p = prepareNode(node);
 
-    expect(p).toEqual([
+    expect(p).toMatchObject([
       {
         content: [
           {
@@ -67,7 +67,7 @@ describe('calcParagraph', () => {
     );
     const p = prepareNode(node);
 
-    expect(p).toEqual([
+    expect(p).toMatchObject([
       {
         content: [
           {
@@ -84,7 +84,7 @@ describe('calcParagraph', () => {
     const node = testRender(<Paragraph margin={1} maxLines={2} />);
     const p = prepareNode(node);
 
-    expect(p).toEqual([
+    expect(p).toMatchObject([
       {
         content: [
           {
@@ -108,7 +108,7 @@ describe('calcParagraph', () => {
     );
     const p = prepareNode(node);
 
-    expect(p).toEqual([
+    expect(p).toMatchObject([
       // Root
       {
         content: [

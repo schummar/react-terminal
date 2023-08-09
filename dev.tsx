@@ -7,7 +7,7 @@ function Element() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCount((count) => count + 1);
-    }, 100);
+    }, 500);
     return () => clearInterval(timer);
   }, []);
 
@@ -28,5 +28,5 @@ let i = 0;
 setInterval(() => {
   console.log(`additional ${i++}`);
   writeLine(`line ${i++}`, { prefix: '> ' });
-  writeLine(`line ${i++}`, { prefix: '> ', backgroundColor: 'red' });
-}, 100);
+  writeLine(`line ${i++}`, { prefix: '> ', backgroundColor: 'red', color: 'blue', grow: 1 });
+}, 500);
