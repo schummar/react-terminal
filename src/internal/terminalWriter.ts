@@ -37,7 +37,7 @@ export class TerminalWriter {
         children: [
           {
             type: 'text',
-            text: text.trim(),
+            text: text.replace(/\n$/, ''),
           },
         ],
         props: options,
