@@ -27,6 +27,6 @@ render(
 let i = 0;
 setInterval(() => {
   console.log(`additional ${i++}`);
-  writeLine(`line ${i++}\n`, { prefix: '> ' });
-  writeLine(`line ${i++}\n`, { prefix: '> ' });
+  writeLine(`line ${i++}`, { prefix: '> ' });
+  writeLine(`line ${i++}`, { prefix: '> ', backgroundColor: 'red' });
 }, 100);

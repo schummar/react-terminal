@@ -3,7 +3,7 @@ import { TextProps } from '../elements';
 import { calcLines } from './calcLines';
 import { ParagraphElement } from './hostConfig';
 import { layoutNode } from './layoutNode';
-import { PNode } from './prepareNode';
+import { PNode, prepareNode } from './prepareNode';
 import { rewrapLines } from './rewrapLines';
 
 export interface TerminalWriterTarget {
@@ -30,11 +30,19 @@ export class TerminalWriter {
     this.render();
   }
 
-  writeLine(text: string, options?: Omit<TextProps, 'children'>) {
-    this.additionalLines.push({
-      content: text.replace(/\n$/, ''),
-      prefix: options?.prefix,
-    });
+  writeLine(text: string, options: Omit<TextProps, 'children'> = {}) {
+    this.additionalLines.push(
+      ...prepareNode({
+        type: 'textElement',
+        children: [
+          {
+            type: 'text',
+            text: text.trim(),
+          },
+        ],
+        props: options,
+      }),
+    );
   }
 
   stop() {
