@@ -19,10 +19,6 @@ export const createRoot = ({ target }: RenderOptions = {}) => {
   const reconciler = Reconciler(hostConfig);
   const container = (reconciler.createContainer as any)(root, 0, false, null);
 
-  const render = (component: ReactNode) => {
-    reconciler.updateContainer(component, container, null);
-  };
-
   const unmount = () => {
     reconciler.updateContainer(null, container, null, null);
   };
@@ -35,17 +31,21 @@ export const createRoot = ({ target }: RenderOptions = {}) => {
     terminalWriter.writeLine(text, options);
   };
 
+  const render = (component: ReactNode) => {
+    reconciler.updateContainer(component, container, null);
+
+    return () => {
+      stop();
+      unmount();
+    };
+  };
+
   return { render, unmount, stop, writeLine };
 };
 
 export const render = (component: ReactNode, options?: RenderOptions) => {
   const root = createRoot(options);
-  root.render(component);
-
-  return () => {
-    root.stop();
-    root.unmount();
-  };
+  return root.render(component);
 };
 
 export const renderToString = (component: ReactNode, width = Infinity) => {
