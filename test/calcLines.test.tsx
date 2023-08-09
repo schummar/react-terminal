@@ -4,7 +4,7 @@ import { calcLines } from '../src/internal/calcLines';
 import { testRender } from './_testRender';
 
 describe('calcParagraphs', () => {
-  test('nested', () => {
+  test('nested', async () => {
     const node = testRender(
       <>
         <Paragraph>
@@ -39,7 +39,7 @@ describe('calcParagraphs', () => {
     const lines = calcLines(node, '', 20);
 
     expect(lines.join('\n')).toBe(
-      `\u001b[32mOk\u001b[39m \u001b[1mSome l\u001b[22m... \u001b[2m[1.23s]\u001b[22m
+      `\u001b[32mOk\u001b[39m \u001b[1mSome l...\u001b[22m \u001b[2m[1.23s]\u001b[22m
 
   foo
   bar

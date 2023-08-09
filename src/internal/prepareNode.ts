@@ -61,7 +61,6 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
   if (node.type === 'text') {
     return node.text.split('\n').map((line, index, arr) => ({
       content: line,
-      format,
       inline: {
         l: index === 0,
         r: index === arr.length - 1,

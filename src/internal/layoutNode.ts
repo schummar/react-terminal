@@ -91,7 +91,7 @@ export const layoutNode = (_node: PNode, maxWidth: number): string[] => {
 
     return wrapAnsi(p, maxWidth, { hard: true, trim: false })
       .split('\n')
-      .map((line) => node.format(node.prefix + (line.length ? ''.repeat(node.margin[3]) + line : line)));
+      .map((line) => node.format(node.prefix + (line.length ? ' '.repeat(node.margin[3]) + line : line)));
   });
 
   paragraphs = paragraphs.slice(-node.maxLines);
