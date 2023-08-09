@@ -23,7 +23,10 @@ export class TerminalWriter {
     this.hideCursor(),
   ];
 
-  constructor(private root: ParagraphElement, private target: TerminalWriterTarget = process.stdout) {
+  constructor(
+    private root: ParagraphElement,
+    private target: TerminalWriterTarget = process.stdout,
+  ) {
     this.render();
   }
 
