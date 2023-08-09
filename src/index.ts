@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 import Reconciler from 'react-reconciler';
+import { TextProps } from './elements';
 import { createHostConfig, ParagraphElement } from './internal/hostConfig';
 import { stringWriter } from './internal/stringWriter';
 import { TerminalWriter, TerminalWriterTarget } from './internal/terminalWriter';
+export * from 'xterm-headless';
 export { Paragraph, Text } from './elements';
 export type { ParagraphProps, TextProps } from './elements';
-export * from 'xterm-headless';
 
 export interface RenderOptions {
   target?: TerminalWriterTarget;
@@ -30,7 +31,11 @@ export const createRoot = ({ target }: RenderOptions = {}) => {
     terminalWriter.stop();
   };
 
-  return { render, unmount, stop };
+  const writeLine = (text: string, options?: TextProps) => {
+    terminalWriter.writeLine(text, options);
+  };
+
+  return { render, unmount, stop, writeLine };
 };
 
 export const render = (component: ReactNode, options?: RenderOptions) => {

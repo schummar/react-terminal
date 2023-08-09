@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { Paragraph, Text } from '../src/elements';
 import { prepareNode } from '../src/internal/prepareNode';
-import { withDefaults } from './_testHelpers';
 import { testRender } from './_testRender';
 
 describe('calcParagraph', () => {
@@ -10,9 +9,9 @@ describe('calcParagraph', () => {
     const p = prepareNode(node);
 
     expect(p).toEqual([
-      withDefaults({
+      {
         content: [{ content: 'foo', inline: { l: true, r: true }, width: 3 }],
-      }),
+      },
     ]);
   });
 
@@ -25,7 +24,7 @@ describe('calcParagraph', () => {
     const p = prepareNode(node);
 
     expect(p).toEqual([
-      withDefaults({
+      {
         content: [
           {
             content: [{ content: 'foo', inline: { l: true, r: true }, width: 3 }],
@@ -36,7 +35,7 @@ describe('calcParagraph', () => {
             shrink: 1,
           },
         ],
-      }),
+      },
     ]);
   });
 
@@ -45,7 +44,7 @@ describe('calcParagraph', () => {
     const p = prepareNode(node);
 
     expect(p).toEqual([
-      withDefaults({
+      {
         content: [
           {
             content: [],
@@ -56,7 +55,7 @@ describe('calcParagraph', () => {
             shrink: 1,
           },
         ],
-      }),
+      },
     ]);
   });
 
@@ -69,7 +68,7 @@ describe('calcParagraph', () => {
     const p = prepareNode(node);
 
     expect(p).toEqual([
-      withDefaults({
+      {
         content: [
           {
             content: [{ content: 'foo', inline: { l: true, r: true }, width: 3 }],
@@ -77,7 +76,7 @@ describe('calcParagraph', () => {
             maxLines: 2,
           },
         ],
-      }),
+      },
     ]);
   });
 
@@ -86,7 +85,7 @@ describe('calcParagraph', () => {
     const p = prepareNode(node);
 
     expect(p).toEqual([
-      withDefaults({
+      {
         content: [
           {
             content: [],
@@ -94,7 +93,7 @@ describe('calcParagraph', () => {
             maxLines: 2,
           },
         ],
-      }),
+      },
     ]);
   });
 
@@ -111,7 +110,7 @@ describe('calcParagraph', () => {
 
     expect(p).toEqual([
       // Root
-      withDefaults({
+      {
         content: [
           // P0
           {
@@ -172,7 +171,7 @@ describe('calcParagraph', () => {
             ],
           },
         ],
-      }),
+      },
     ]);
   });
 });

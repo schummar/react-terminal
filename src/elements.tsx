@@ -19,6 +19,7 @@ export type TextProps = {
   fill?: string;
   shrink?: boolean | number;
   ellipsis?: boolean;
+  prefix?: string;
 } & {
   [K in ModifierName]?: boolean;
 };

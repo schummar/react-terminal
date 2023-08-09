@@ -1,6 +1,9 @@
 import ansiEscapes from 'ansi-escapes';
+import { TextProps } from '../elements';
 import { calcLines } from './calcLines';
 import { ParagraphElement } from './hostConfig';
+import { layoutNode } from './layoutNode';
+import { PNode } from './prepareNode';
 import { rewrapLines } from './rewrapLines';
 
 export interface TerminalWriterTarget {
@@ -12,7 +15,7 @@ export interface TerminalWriterTarget {
 export class TerminalWriter {
   renderedLines?: { cols: number; lines: string[] };
   originalWrite?: TerminalWriterTarget['write'];
-  additionalLines = '';
+  additionalLines: PNode[] = [];
   handles = [
     //
     this.hookIntoStdout(),
@@ -22,6 +25,13 @@ export class TerminalWriter {
 
   constructor(private root: ParagraphElement, private target: TerminalWriterTarget = process.stdout) {
     this.render();
+  }
+
+  writeLine(text: string, options?: Omit<TextProps, 'children'>) {
+    this.additionalLines.push({
+      content: text.replace(/\n$/, ''),
+      prefix: options?.prefix,
+    });
   }
 
   stop() {
@@ -43,7 +53,7 @@ export class TerminalWriter {
       }
       data = Buffer.from(data, typeof args[0] === 'string' ? args[0] : 'utf8').toString();
 
-      this.additionalLines += data;
+      this.writeLine(data);
       this.render();
       return true;
     };
@@ -80,7 +90,10 @@ export class TerminalWriter {
     const rows = this.target.rows || 40;
     let maxLines = Math.max(rows - 1, 1);
 
-    const lines = calcLines(this.root, this.additionalLines, cols);
+    const add = this.additionalLines.length ? this.additionalLines.flatMap((x) => layoutNode(x, cols)) : [];
+    this.additionalLines = [];
+
+    const lines = calcLines(this.root, '', cols);
     let renderedLines: (string | null)[] = this.renderedLines?.lines ?? [];
 
     if (this.renderedLines && this.renderedLines.cols !== cols) {
@@ -98,10 +111,14 @@ export class TerminalWriter {
     }
     write(ansiEscapes.cursorLeft);
 
+    add.forEach((line) => {
+      write(`${line}${ansiEscapes.eraseEndLine}\n${ansiEscapes.cursorLeft}`);
+    });
+
     let skip = 0;
 
     lines.slice(-maxLines).forEach((line, i) => {
-      if (line === renderedLines[i]) {
+      if (line === renderedLines[i + add.length]) {
         skip++;
         return;
       }

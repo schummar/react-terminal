@@ -1,14 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import { layoutNode } from '../src/internal/layoutNode';
-import { withDefaults } from './_testHelpers';
 
 describe('layoutChunk', () => {
   test('simple', () => {
     const lines = layoutNode(
-      withDefaults({
+      {
         content: 'simple text',
         width: 11,
-      }),
+      },
       20,
     );
 
@@ -18,11 +17,11 @@ describe('layoutChunk', () => {
   describe('grow', () => {
     test('single element', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: 'simple text',
           grow: 1,
           width: 11,
-        }),
+        },
         20,
       );
 
@@ -31,14 +30,14 @@ describe('layoutChunk', () => {
 
     test('one grows', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: [
             { content: 'foo', grow: 1, width: 3 },
             { content: 'bar', width: 3 },
           ],
           inline: { l: true, r: true },
           width: 6,
-        }),
+        },
         20,
       );
 
@@ -47,14 +46,14 @@ describe('layoutChunk', () => {
 
     test('multiple grow', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: [
             { content: 'foo', grow: 1, width: 3 },
             { content: 'bar', grow: 2, width: 3 },
           ],
           inline: { l: true, r: true },
           width: 6,
-        }),
+        },
         20,
       );
 
@@ -65,11 +64,11 @@ describe('layoutChunk', () => {
   describe('shrink', () => {
     test('single element', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: 'simple text',
           shrink: 1,
           width: 11,
-        }),
+        },
         10,
       );
 
@@ -78,12 +77,12 @@ describe('layoutChunk', () => {
 
     test('ellipsis', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: 'simple text',
           shrink: 1,
           width: 11,
           ellipsis: true,
-        }),
+        },
         10,
       );
 
@@ -92,14 +91,14 @@ describe('layoutChunk', () => {
 
     test('one shrinks', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: [
             { content: 'foo', shrink: 1, width: 3 },
             { content: 'bar', width: 3 },
           ],
           inline: { l: true, r: true },
           width: 6,
-        }),
+        },
         5,
       );
 
@@ -108,14 +107,14 @@ describe('layoutChunk', () => {
 
     test('multiple shrink', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: [
             { content: 'foo', shrink: 1, width: 3 },
             { content: 'bar', shrink: 2, width: 3 },
           ],
           inline: { l: true, r: true },
           width: 6,
-        }),
+        },
         3,
       );
 
@@ -126,10 +125,10 @@ describe('layoutChunk', () => {
   describe('maxLines', () => {
     test('maxLines', () => {
       const lines = layoutNode(
-        withDefaults({
+        {
           content: [{ content: 'foo' }, { content: 'bar' }, { content: 'baz' }],
           maxLines: 2,
-        }),
+        },
         3,
       );
 

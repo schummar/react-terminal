@@ -6,7 +6,7 @@ export const calcLines = (node: Node, additionalLines: string, width: number): s
   const prepared = prepareNode(node);
 
   if (additionalLines.length > 0) {
-    prepared.push(
+    prepared.unshift(
       ...additionalLines.split('\n').map<PNode>((line) => ({
         content: line,
         width: 0,

@@ -4,14 +4,31 @@ import wrapAnsi from 'wrap-ansi';
 import { sum } from './helpers';
 import { PNode } from './prepareNode';
 
-export const layoutNode = (node: PNode, maxWidth: number): string[] => {
-  maxWidth -= node.margin[1] + node.margin[3];
+function withDefaults(node: PNode): PNode & Required<Omit<PNode, 'inline'>> {
+  return {
+    content: node.content,
+    inline: node.inline,
+    width: node.width ?? 0,
+    grow: node.grow ?? 0,
+    fill: node.fill ?? ' ',
+    shrink: node.shrink ?? 0,
+    ellipsis: node.ellipsis ?? false,
+    margin: node.margin ?? [0, 0, 0, 0],
+    maxLines: node.maxLines ?? Infinity,
+    prefix: node.prefix ?? '',
+  };
+}
+
+export const layoutNode = (_node: PNode, maxWidth: number): string[] => {
+  const node = withDefaults(_node);
+
+  maxWidth -= node.margin[1] + node.margin[3] + stringWidth(node.prefix);
   let paragraphs;
 
   if (typeof node.content === 'string') {
     paragraphs = [node.content];
   } else if (node.inline) {
-    const children = node.content.map((child) => ({ ...child, delta: 0, max: 0 }));
+    const children = node.content.map((child) => ({ ...withDefaults(child), delta: 0, max: 0 }));
 
     if (maxWidth !== Infinity && maxWidth !== 0 && node.width !== maxWidth) {
       const prop = maxWidth > node.width ? 'grow' : 'shrink';
@@ -23,7 +40,7 @@ export const layoutNode = (node: PNode, maxWidth: number): string[] => {
 
         for (const child of layoutNodes) {
           child.max = prop === 'grow' ? Infinity : child.width;
-          child.delta = Math.min(Math.floor((child[prop] ?? 0) / divisor), child.max);
+          child.delta = Math.min(Math.floor(child[prop] / divisor), child.max);
           delta -= child.delta;
         }
 
@@ -71,7 +88,7 @@ export const layoutNode = (node: PNode, maxWidth: number): string[] => {
 
     return wrapAnsi(p, maxWidth, { hard: true, trim: false })
       .split('\n')
-      .map((line) => (line.length ? ''.padEnd(node.margin[3], ' ') + line : line));
+      .map((line) => node.prefix + (line.length ? ''.padEnd(node.margin[3], ' ') + line : line));
   });
 
   paragraphs = paragraphs.slice(-node.maxLines);

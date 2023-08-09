@@ -10,13 +10,14 @@ export type PNode = {
     l: boolean;
     r: boolean;
   };
-  width: number;
-  grow: number;
-  fill: string;
-  shrink: number;
-  ellipsis: boolean;
-  margin: [number, number, number, number];
-  maxLines: number;
+  width?: number;
+  grow?: number;
+  fill?: string;
+  shrink?: number;
+  ellipsis?: boolean;
+  margin?: [number, number, number, number];
+  maxLines?: number;
+  prefix?: string;
 };
 
 const calcFormat = (props: TextProps, format = chalk) => {
@@ -40,19 +41,19 @@ const calcFormat = (props: TextProps, format = chalk) => {
   return format;
 };
 
-const calcMargin = (m: ParagraphProps['margin'] = 0): [number, number, number, number] => {
+const calcMargin = (m: ParagraphProps['margin']): [number, number, number, number] | undefined => {
   if (typeof m === 'number') {
     return [m, m, m, m];
-  } else if (m.length === 2) {
+  } else if (m?.length === 2) {
     return [...m, ...m];
-  } else if (m.length === 3) {
+  } else if (m?.length === 3) {
     return [...m, m[1]];
   }
 
   return m;
 };
 
-const normValue = (value?: number | boolean) => (value === true ? 1 : value === false || value === undefined || value < 0 ? 0 : value);
+const normValue = (value?: number | boolean) => (value === true ? 1 : typeof value === 'number' ? Math.max(value, 0) : undefined);
 
 export const prepareNode = (node: Node, format = chalk): PNode[] => {
   // For text node: Just return a new open paragraph
@@ -64,21 +65,11 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
         r: index === arr.length - 1,
       },
       width: stringWidth(line),
-      grow: 0,
-      fill: ' ',
-      shrink: 0,
-      ellipsis: false,
-      margin: [0, 0, 0, 0],
-      maxLines: Infinity,
     }));
   }
 
   format = calcFormat(node.props, format);
   const children = node.children.flatMap((child) => prepareNode(child, format));
-
-  // if (children.length === 0) {
-  //   return [];
-  // }
 
   let last: PNode | undefined;
   let currentGroup: PNode[] = [];
@@ -105,11 +96,10 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
             },
             width: sum(group.map((child) => child.width)),
             grow: normValue(node.props.grow ?? (node.props.fill ? true : undefined)),
-            fill: node.props.fill ?? ' ',
+            fill: node.props.fill,
             shrink: normValue(node.props.shrink),
-            ellipsis: node.props.ellipsis ?? false,
-            margin: [0, 0, 0, 0],
-            maxLines: Infinity,
+            ellipsis: node.props.ellipsis,
+            prefix: node.props.prefix,
           }
         : group[0],
     )
@@ -122,13 +112,9 @@ export const prepareNode = (node: Node, format = chalk): PNode[] => {
   return [
     {
       content: blocks,
-      width: 0,
-      grow: 0,
-      fill: ' ',
-      shrink: 0,
-      ellipsis: false,
       margin: calcMargin(node.props.margin),
-      maxLines: node.props.maxLines ?? Infinity,
+      maxLines: node.props.maxLines,
+      prefix: node.props.prefix,
     },
   ];
 };
