@@ -43,6 +43,8 @@ export class TerminalWriter {
         props: options,
       }),
     );
+
+    this.render();
   }
 
   stop() {
@@ -65,7 +67,6 @@ export class TerminalWriter {
       data = Buffer.from(data, typeof args[0] === 'string' ? args[0] : 'utf8').toString();
 
       this.writeLine(data);
-      this.render();
       return true;
     };
 
