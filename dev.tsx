@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Paragraph, createRoot } from './src';
+import { Paragraph, Text, createRoot } from './src';
 
 function Element() {
   const [count, setCount] = useState(0);
@@ -11,12 +11,20 @@ function Element() {
     return () => clearInterval(timer);
   }, []);
 
-  return <Paragraph>Count: {count}</Paragraph>;
+  return (
+    <Paragraph>
+      Count: {count}
+      <Text shrink ellipsis>
+        --------------------------------------------------------------------------------------------------------
+      </Text>
+      #
+    </Paragraph>
+  );
 }
 
 const { render, writeLine } = createRoot();
 render(
-  <Paragraph margin={1} prefix="|">
+  <Paragraph margin={[1, 0, 0, 0]} prefix="|">
     <Element />
     <Element />
     <Element />
@@ -24,9 +32,10 @@ render(
   </Paragraph>,
 );
 
-let i = 0;
-setInterval(() => {
-  console.log(`additional ${i++}`);
-  writeLine(`line ${i++}`, { prefix: '> ' });
-  writeLine(`line ${i++}`, { prefix: '> ', backgroundColor: 'red', color: 'blue', grow: 1 });
-}, 500);
+writeLine('', { backgroundColor: 'white', grow: true });
+// let i = 0;
+// setInterval(() => {
+//   console.log(`additional ${i++}`);
+//   writeLine(`line ${i++}`, { prefix: '> ' });
+//   writeLine(`line ${i++}`, { prefix: '> ', backgroundColor: 'red', color: 'blue', grow: 1 });
+// }, 500);
